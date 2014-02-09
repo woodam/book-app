@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	var test = function(){
+		/* typeof arguments === 마치 배열 같은 인자값들. */
+		/* arguments.push (x) */
+		console.log(arguments[0]);
+	}
+	/*
+	 * 함수실행
+	 * 함수명.apply(context, arguments Array)
+	 */
+	test.apply(null, [3,4,3,5,3,1]);
+</script>
+</body>
+</html>

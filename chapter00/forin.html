@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+var obj = {
+	a : 5,
+	b : 10
+};
+
+var klass = {};
+for(var i in obj){
+	console.log( i, obj[i] );
+	klass[i] = obj[i];
+}
+console.log( klass );
+</script>
+</body>
+</html>

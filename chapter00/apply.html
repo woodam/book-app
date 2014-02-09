@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	var test = function(a, b){
+		console.log(a, b);
+	}
+	/*
+	 * 함수실행
+	 * 1. 함수명();
+	 * 2. 함수명.apply(context, arguments Array)
+	 * 3. 함수명.call(context, parameter1, parameter2, parameter3....)
+	 * 
+	 * ps. context - 유효범위(실행범위)
+	 *     this가 바라보는 객체를 의미함.
+	 */
+	
+	// test(1, 2);
+	
+	test.apply(null, [3,4]) // null === window
+	
+	// test.call(null, 3, 4) // null === window
+</script>
+</body>
+</html>

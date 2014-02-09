@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+
+	var Test = function(){}
+	Test.prototype.say = function(){
+		console.log( 'say' );
+	}
+	
+	var test = new Test();
+	test.say = function(){
+		console.log( 'method');
+	}
+	test.say();
+	console.log( 'test.hasOwnProperty("say") : ', test.hasOwnProperty("say") );
+	
+	var test2 = new Test();
+	test2.say();
+	console.log( 'test2.hasOwnProperty("say") : ', test2.hasOwnProperty("say") );
+</script>
+</body>
+</html>

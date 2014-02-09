@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	// this는 기본 window
+
+	// 객체.함수(method)에서 this
+	var Test = function(){}
+	Test.prototype.sayThis = function(){
+		console.log( this ); // 생성될 객체를 바라본다.
+	}
+
+	var test = new Test();
+	test.sayThis();
+	
+	var test2 = new Test();
+	test2.sayThis();
+</script>
+</body>
+</html>
