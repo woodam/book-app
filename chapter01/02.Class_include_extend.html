@@ -11,19 +11,20 @@
 			this.init.apply(this, arguments);
 		}
 		klass.prototype.init = function(){}
+
 		klass.fn = klass.prototype;
-		
-		// 클래스의 단축
-		klass.fn.parent = klass;
-		
+		klass.fn.parent = klass; // 클래스의 단축
+
+		// 생성자 함수의 명령어 추가 
 		klass.extend = function(obj){
 			var extended = obj.extended;
 			for(var i in obj){
-				klass[i] = obj[i];
+				klass[i] = obj[i]; // klass.a = 5;
 			}
 			if(extended) extended(klass);
 		}
-
+		
+		// 생성자 함수에 의해서 만들어진 instance에 명령어 추가  
 		klass.include = function(obj){
 			var included = obj.included;
 			for(var i in obj){
@@ -39,7 +40,7 @@
 	
 	var Person = new Class;
 	Person.prototype.init = function(){
-		// console.log( 'init : ', this );
+		console.log( 'init : ', this );
 	}
 
 	Person.include({

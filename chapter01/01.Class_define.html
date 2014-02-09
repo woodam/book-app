@@ -8,7 +8,7 @@
 <script type="text/javascript" charset="utf-8">
 	var Class = function(){
 		var klass = function(){
-			this.init.apply(this, arguments);
+			this.init.call(this, arguments);
 		}
 		klass.prototype.init = function(){}
 		return klass; /* function, array, object */
