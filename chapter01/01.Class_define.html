@@ -13,15 +13,16 @@
 		klass.prototype.init = function(){}
 		return klass; /* function, array, object */
 	}
-	
+
 	// ======================================================
-	
-	var Person = new Class;
-	Person.prototype.init = function(){
-		console.log( 'person init' );
+
+	var Person = new Class; // typeof 'function'
+	Person.prototype.init = function(a, b, c, d){
+		console.log( 'person init : ', a, b, c, d );
 	}
 	
-	var person = new Person;
+	var person = new Person(1, 2, 3, 4);
+	var person2 = new Person(3, 4);
 </script>
 </body>
 </html>
