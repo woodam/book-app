@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title></title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+
+<ul id="tabs">
+	<li data-tab="users">users</li>
+	<li data-tab="groups">groups</li>
+</ul>
+
+<div id="tabsContents">
+	<li data-tab="users"> ...users</li>
+	<li data-tab="groups">...groups</li>
+</div>
+
+
+<script type="text/javascript" charset="utf-8">
+$.fn.tabs = function(control){
+	var $element = $(this),
+		$control = $(control);
+
+	$element.on("click", "li", function(e){
+		var tabName = $(this).attr('data-tab');
+		$element.trigger("change.tabs", tabName);
+	});
+	
+	$element.on('change.tabs', function(e, tabName){
+		console.log(tabName);
+	});
+}
+
+$("#tabs").tabs();
+</script>	
+
+</body>
+</html>

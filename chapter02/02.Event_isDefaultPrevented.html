@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>event.stopImmediatePropagation demo</title>
+<style></style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<p class="doing">doing</p>
+	<ul>
+		<li><a href="#">1</a></li>
+		<li><a href="#">2</a></li>
+		<li><a href="#">3</a></li>
+	</ul>
+
+	<script>
+	function tab(){
+		$("ul").on("click.tab", "a", function(){
+			var $this = $(this);
+			
+		    var e = $.Event('show', {
+				relatedTarget: $("a:last")
+			});
+			$this.trigger(e);
+		
+			if (e.isDefaultPrevented()) return false;
+			
+			alert("end");
+			return false;
+		});
+	}
+
+	tab();
+
+	$("ul").on("show", function(event){
+		var doing = $("p.doing").length;
+		if( doing ){
+			event.preventDefault();
+		}
+		
+	});
+	</script>
+
+</body>
+</html>

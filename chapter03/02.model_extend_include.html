@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>model</title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+if(typeof Object.create !== "function"){
+	Object.create = function(o){
+		function F(){}
+		F.prototype = o;
+		return new F();
+	}
+}
+
+var Model = {
+	inherited : function(){},
+	created : function(){},
+	
+	prototype : {
+		init : function(){}
+	},
+	
+	create : function(){
+		var object = Object.create(this);
+		object.parent = this;
+		object.prototype = object.fn = Object.create(this.prototype);
+		
+		object.created();
+		this.inherited(object);
+		return object;
+	},
+	
+	init : function(){
+		var instance = Object.create(this.prototype);
+		instance.parent = this;
+		instance.init.apply(instance, arguments);
+		return instance;
+	},
+	
+    extend: function(o){
+		var extended = o.extended;
+		jQuery.extend(this, o);
+		if(extended) extended(this);
+    },
+    
+    include: function(o){
+    	var included = o.included;
+		jQuery.extend(this.prototype, o);
+		if(included) included(this);
+    }
+}
+
+Model.extend({
+	find : function(){}
+});
+
+Model.include({
+	init : function(atts){ console.log( "prototype.init : ", arguments); },
+	load : function(attributes){ /* ... */ }
+});
+
+var Asset = Model.create();
+var asset = Asset.init({ name : "foo.png" });
+
+</script>
+</body>
+</html>
+
+

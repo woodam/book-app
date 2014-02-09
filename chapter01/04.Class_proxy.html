@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	var Class = function(parent){
+		/* 새 클래스를 만들 때 선택사항으로 부모를 넘겨줄수 있도록 함수 구현 */
+		
+		var klass = function(){
+			this.init.apply(this, arguments);
+		}
+		
+		if( parent ){
+			var subclass = function(){};
+			subclass.prototype = parent.prototype;
+			klass.prototype = new subclass;
+		}
+		
+		klass.prototype.init = function(){}
+
+		// 클래스의 단축
+		klass.fn = klass.prototype;
+		klass.fn.parent = klass; // ?????????????
+		
+		klass._super = klass.__proto__; // Super.js (http://github.com/maccman/super.js)
+		
+		klass.proxy = function(func){
+			var self = this;
+			return (function(){
+				return func.apply(self, arguments);
+			});
+		}
+		
+		klass.extend = function(obj){
+			var extended = obj.extended;
+			for(var i in obj){
+				klass[i] = obj[i];
+			}
+			if(extended) extended(klass);
+		}
+
+		klass.include = function(obj){
+			var included = obj.included;
+			for(var i in obj){
+				klass.fn[i] = obj[i];
+			}
+			if(included) included(klass);
+		}
+		
+		return klass; /* function, array, object */
+	}
+	
+	// ======================================================
+	
+	var Button = new Class;
+	Button.include({
+		init : function(element){
+			this.element = $(element);
+			
+			this.element.click(this.click.bind(this));
+		},
+		click : function(){ console.log('click') }
+	});
+</script>
+</body>
+</html>

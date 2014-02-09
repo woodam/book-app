@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>event.stopImmediatePropagation demo</title>
+<style>
+	p {height: 30px; width: 150px; background-color: #ccf;}
+	div {height: 30px; width: 150px; background-color: #cfc;}
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+	<p>paragraph</p>
+	<div>division</div>
+
+	<script>
+		$("p").click(function(event) {
+			console.log( "event.isImmediatePropagationStopped() : ", event.isImmediatePropagationStopped() );
+			event.stopImmediatePropagation();
+			console.log( "event.isImmediatePropagationStopped() : ", event.isImmediatePropagationStopped() );
+		});
+
+		$("p").click(function(event) {
+			// This function won't be executed
+			$(this).css("background-color", "red");
+		});
+		
+		$("div").click(function(event) {
+			// This function will be executed
+			$(this).css("background-color", "red");
+		});
+		
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title></title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+
+<script type="text/javascript" charset="utf-8">
+/*
+PubSub = {
+	_callbacks = {
+		wem : [
+			function(){ ... },
+			function(){ ... }
+		]
+	}
+}
+*/
+
+var PubSub = {
+	subscribe : function(ev, callback){
+		// _callbacks 오브젝트가 없으면 새로 만든다.
+		var calls = this._callbacks || (this._callbacks = {});
+
+		// 이벤트 키에 해당하는 배열이 없으면 배열을 만든 다음 콜백을 배열에 추가한다.
+		(this._callbacks[ev] || (this._callbacks[ev] = [])).push(callback);
+		return this;
+	},
+
+	publish : function(){
+		// arguments 오브젝트를 진짜 배열로 바꾼다.
+		var args = Array.prototype.slice.call(arguments, 0);
+		
+		// 이벤트 이름을 포함하는 첫번째 인자를 추출한다.
+		var ev = args.shift();
+		
+		// _callbacks 오브젝트가 없거나 해당 이벤트의 배열을 포함하지 않으면 반환한다.
+		var list, calls, i, l;
+		if( !(calls = this._callbacks) ) return this;
+		if( !(list  = this._callbacks[ev]) ) return this;
+		
+		for(i=0, l=list.length; i<l; i++){
+			list[i].apply(this, args);
+		}
+		return this;
+	}
+};
+
+// 사용예제
+PubSub.subscribe("wem", function(){
+	alert("wem")
+});
+
+PubSub.subscribe("wem", function(){
+	alert("wem2")
+});
+
+PubSub.publish("wem");
+</script>	
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

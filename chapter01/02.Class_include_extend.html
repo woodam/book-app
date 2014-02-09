@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	var Class = function(){
+		var klass = function(){
+			this.init.apply(this, arguments);
+		}
+		klass.prototype.init = function(){}
+		klass.fn = klass.prototype;
+		
+		// 클래스의 단축
+		klass.fn.parent = klass;
+		
+		klass.extend = function(obj){
+			var extended = obj.extended;
+			for(var i in obj){
+				klass[i] = obj[i];
+			}
+			if(extended) extended(klass);
+		}
+
+		klass.include = function(obj){
+			var included = obj.included;
+			for(var i in obj){
+				klass.fn[i] = obj[i];
+			}
+			if(included) included(klass);
+		}
+		
+		return klass; /* function, array, object */
+	}
+	
+	// ======================================================
+	
+	var Person = new Class;
+	Person.prototype.init = function(){
+		// console.log( 'init : ', this );
+	}
+
+	Person.include({
+		save : function(){ console.log('save') },
+		exists : function(){ console.log( 'exists') },
+		included : function(klass){
+			console.log( "included : ", klass === Person );
+		}
+	});
+	
+	var person = new Person;
+	person.save();
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title></title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+
+<script type="text/javascript" charset="utf-8">
+// https://github.com/cowboy/jquery-tiny-pubsub
+/*! Tiny Pub/Sub - v0.7.0 - 2013-01-29
+* https://github.com/cowboy/jquery-tiny-pubsub
+* Copyright (c) 2013 "Cowboy" Ben Alman; Licensed MIT */
+(function($) {
+	var o = $({});
+
+	$.subscribe = function() {
+		o.on.apply(o, arguments);
+	};
+
+	$.unsubscribe = function() {
+		o.off.apply(o, arguments);
+
+	};
+
+	$.publish = function() {
+		o.trigger.apply(o, arguments);
+	};
+}(jQuery));
+</script>	
+
+<script>
+// Creates a "named" logging function.
+function createLogger(name) {
+  return function(_, a, b) {
+    // Skip the first argument (event object) but log the name and other args.
+    console.log(name, a, b);
+  };
+}
+
+$.subscribe('foo', createLogger('foo'));
+$.subscribe('foo.bar', createLogger('foo.bar'));
+$.subscribe('foo.baz', createLogger('foo.baz'));
+
+
+// Publish arbitrary values.
+$.publish('foo', [1, 2]);
+// logs:
+// foo 1 2
+// foo.bar 1 2
+// foo.baz 1 2
+
+$.publish('foo.bar', [3, 4]);
+// logs:
+// foo.bar 3 4
+
+$.publish('foo.baz', [5, 6]);
+// logs:
+// foo.baz 5 6
+
+$.unsubscribe('foo.bar');
+$.publish('foo', [7, 8]);
+// logs:
+// foo 7 8
+// foo.baz 7 8
+</script>
+</body>
+</html>

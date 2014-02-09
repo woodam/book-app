@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>model</title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+/* ie8부터 지원
+ * 데이타는 도메인 단위로 저장(5MB 이상의 저장)
+ */ 
+
+var itemsStored = localStorage.length;
+console.log('itemsStored : ', itemsStored);
+
+localStorage.setItem('someData', 'wem');
+console.log('localStorage : ', localStorage);
+
+var data = localStorage.getItem("someData") // "wem"
+console.log('data : ', data);
+
+localStorage.removeItem("someData"); // localStorage의 somedata 삭제
+console.log('localStorage : ', localStorage);
+
+// 모든 항복 삭제
+localStorage.clear();
+</script>
+</body>
+</html>
+
+

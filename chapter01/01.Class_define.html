@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	var Class = function(){
+		var klass = function(){
+			this.init.apply(this, arguments);
+		}
+		klass.prototype.init = function(){}
+		return klass; /* function, array, object */
+	}
+	
+	// ======================================================
+	
+	var Person = new Class;
+	Person.prototype.init = function(){
+		console.log( 'person init' );
+	}
+	
+	var person = new Person;
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>model</title>
+<script src="../lib/jquery.js"></script>
+<script src="../lib/json2.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+/*
+ * ie8부터 지원함 - JSON.stringify, JSON.parse
+ * 
+ * ie7 지원시 - https://github.com/douglascrockford/JSON-js/blob/master/json2.js
+ */
+var object = { some : "object", name : "jiman" };
+
+localStorage.setItem("seriData", JSON.stringify(object));
+
+console.log( "localStorage.seriData : ", localStorage.getItem("seriData") );
+
+var result = JSON.parse(localStorage.getItem("seriData"));
+console.log( "result : ", result );
+</script>
+</body>
+</html>
+
+
