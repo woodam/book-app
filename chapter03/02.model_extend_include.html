@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>model</title>
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="../lib/jquery.js"></script>
 </head>
 <body>
 <script type="text/javascript" charset="utf-8">
@@ -40,17 +40,8 @@ var Model = {
 		return instance;
 	},
 	
-    extend: function(o){
-		var extended = o.extended;
-		jQuery.extend(this, o);
-		if(extended) extended(this);
-    },
-    
-    include: function(o){
-    	var included = o.included;
-		jQuery.extend(this.prototype, o);
-		if(included) included(this);
-    }
+    extend: function(o){  jQuery.extend(this, o); },
+    include: function(o){ jQuery.extend(this.prototype, o); }
 }
 
 Model.extend({
