@@ -106,13 +106,16 @@ Model.extend({
 		return record.dup();
 	},
 	populate : function(values){
-		var record = {};
+		var record = {},
+			array = [];
 		for(var i=0, il = values.length; i < il; i++){
 			var record = this.init(values[i]);
 			
 			record.newRecord = this;
 			this.records[record.id] = record;
+			array.push(record);
 		}
+		return array;
 	}
 });
 
@@ -120,24 +123,28 @@ Model.LocalStorage = {
 	saveLocal : function(name){
 		var result = [];
 		for(var i in this.records){
-			result.push(this.records[i]);
+			result.push(this.records[i].attributes());
 		}
 		localStorage[name] = JSON.stringify(result);
 	},
 	loadLocal : function(name){
 		var result = JSON.parse(localStorage[name]);
-		this.populate(result);
+		return this.populate(result);
+		
 	}
 }
 
 var Asset = Model.create();
-Asset.extend(Model.localStorage);
+Asset.extend(Model.LocalStorage);
 Asset.attributes = ["name", "ext"];
+Asset.populate([
+	{name : "jiman"},
+	{name : "jiman1"},
+	{name : "jiman2"},
+]);
+Asset.saveLocal("Asset");
 
-var asset = Asset.init({ name : "document", ext : ".txt" });
-var tmp = asset.attributes();
-
-console.log( tmp );
+console.log( Asset.loadLocal("Asset") );
 </script>
 </body>
 </html>

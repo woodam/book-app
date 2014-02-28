@@ -31,9 +31,7 @@ var Model = {
 	},
 	
 	prototype : {
-		init : function(){
-			console.log();
-		}
+		init : function(){}
 	},
 	
 	create : function(){
@@ -45,7 +43,7 @@ var Model = {
 		this.inherited(object);
 		return object;
 	},
-
+	
 	init : function(){
 		var instance = Object.create(this.prototype);
 		instance.parent = this;
@@ -53,23 +51,25 @@ var Model = {
 		return instance;
 	},
 	
-    extend: function(o){
-		var extended = o.extended;
-		jQuery.extend(this, o);
-		if(extended) extended(this);
-    },
-    
-    include: function(o){
-    	var included = o.included;
-		jQuery.extend(this.prototype, o);
-		if(included) included(this);
-    }
+    extend: function(o){  jQuery.extend(this, o); },
+    include: function(o){ jQuery.extend(this.prototype, o); }
 }
 
 Model.records = {};
 
 Model.include({
 	newRecord : true,
+	
+	init: function(atts){
+		if(atts){
+			this.load(atts);
+		}
+		this.create();
+	},
+	load: function(attributes){
+		for(var name in attributes)
+      		this[name] = attributes[name];
+	},
 	
 	create : function(){
 		if( !this.id ) this.id = Math.guid();
@@ -88,7 +88,6 @@ Model.include({
 	dup : function(){
 		return jQuery.extend(true, {}, this);
 	},
-	
 	attributes : function(){
 		var result = {};
 		for(var i in this.parent.attributes){
@@ -107,12 +106,16 @@ Model.extend({
 		return record.dup();
 	},
 	populate : function(values){
-		var record = {};
+		var record = {},
+			array = [];
 		for(var i=0, il = values.length; i < il; i++){
 			var record = this.init(values[i]);
+			
 			record.newRecord = this;
 			this.records[record.id] = record;
+			array.push(record);
 		}
+		return array;
 	}
 });
 
@@ -120,15 +123,17 @@ Model.LocalStorage = {
 	saveLocal : function(name){
 		var result = [];
 		for(var i in this.records){
-			result.push(this.records[i]);
+			result.push(this.records[i].attributes());
 		}
 		localStorage[name] = JSON.stringify(result);
 	},
 	loadLocal : function(name){
 		var result = JSON.parse(localStorage[name]);
-		this.populate(result);
+		return this.populate(result);
+		
 	}
 }
+
 
 Model.include({
 	createRemote : function(url, callback){
