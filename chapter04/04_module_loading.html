@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>model</title>
+<script src="../lib/jquery.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+var exports = this;
+
+(function($){
+	var mod = {};
+	
+	mod.create = function(includes){
+		var result = function(){
+			this.init.apply(this, arguments);
+		}
+		result.fn = result.prototype;
+		result.fn.init = function(){};
+		
+		result.proxy = function(func){ return $.proxy(func, this);};
+		result.fn.proxy = result.proxy;
+		
+		result.include = function(ob){ $.extend(this.fn, ob); };
+		result.extend  = function(ob){ $.extend(this, ob); };
+		
+		if(includes) result.include(includes);
+		
+		return result;
+	}
+	
+	exports.Controller = mod;
+	
+	$(function($){
+		var ToggleView = Controller.create({
+			init : function(){
+				this.view = $("#view");
+				this.view.mouseover(this.proxy(this.toggleClass), true);
+				this.view.mouseout(this.proxy(this.toggleClass), false);
+			},
+			
+			toggleClass : function(e){
+				this.view.toggleClass("over", e.data);
+			}
+		});
+		
+		new ToggleView("#view");
+	});
+})(jQuery);
+</script>
+</body>
+</html>
+
+
