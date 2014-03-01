@@ -6,6 +6,11 @@
 <script src="../lib/jquery.js"></script>
 </head>
 <body>
+	
+<div id="test">
+	<button class="button1">button</button>
+</div>
+	
 <script type="text/javascript" charset="utf-8">
 (function($, exports){
 	
@@ -16,17 +21,17 @@
 	}
 	
 	mod.load(function(){
-		this.view = $("body");
+		this.view = $("#test");
 	})
 	
-	mod.assetsClick = function(){
+	mod.value1 = 1000;
+	mod.MethodName = function(){
 		// 프로세스 클
+		alert("MethodName : " + this.value1);
 	}
 	
 	mod.load(function(){
-		this.view.find(".assets").click(
-			$.proxy(this.assetsClick, this);
-		);
+		this.view.find(".button1").click($.proxy(this.MethodName, this));
 	});
 	
 })(jQuery, window);
