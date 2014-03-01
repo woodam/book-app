@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>model</title>
+<script src="../lib/jquery.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+(function($, exports){
+	
+	var mod = {};
+	
+	mod.load = function(func){
+		$($.proxy(func, this));
+	}
+	
+	mod.load(function(){
+		this.view = $("body");
+	})
+	
+	mod.assetsClick = function(){
+		// 프로세스 클
+	}
+	
+	mod.load(function(){
+		this.view.find(".assets").click(
+			$.proxy(this.assetsClick, this);
+		);
+	});
+	
+})(jQuery, window);
+</script>
+</body>
+</html>
+
+
