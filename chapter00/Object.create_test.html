@@ -17,19 +17,26 @@ if(typeof Object.create !== "function"){
 
 var Model1 = {
 	test1 : function(){
+		this.
 		console.log("test");
 	},
 	test2 : {
-		haha1 : [1, 2, 3, 4, 5],
+		haha1 : [1, 2, 3, 4, 5], // 배열하고 객체는 주소의 참조 (주의)
 		haha2 : { a : 5, a : 10 }
+	}
+	, test3 : function(){
+		return {
+			haha : [1, 2, 3]
+		}
 	}
 }
 
 var Model2 = Object.create(Model1);
 
 console.log( "Model1 === Model2 : ", Model1 === Model2 );
-console.log( "Model1.test === Model2.test : ", Model1.test === Model2.test );
+console.log( "Model1.test === Model2.test : ", Model1.test1 === Model2.test1 ); // typeof : function - true
 console.log( "Model1.test2.haha1 === Model2.test2.haha1 : ", Model1.test2.haha1 === Model2.test2.haha1 );
+console.log( "Model1.test3.haha === Model2.test3.haha : ", Model1.test3().haha === Model2.test3().haha );
 
 Model1.test2.haha2.a = 100;
 console.log( Model2.test2.haha2.a );

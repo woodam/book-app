@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title></title>
+<script src="../lib/jquery.js" type="text/javascript" charset="utf-8"></script>t
 <script src="../lib/underscore.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
@@ -29,7 +30,10 @@ console.log("obj2.b === obj.b : " , obj2.b === obj.b);
 
 console.log('--------------------------------------------------------')
 
-var obj3 = $.extend(this, {}, obj);
+/* $.extend({}, obj) === obj.create
+ * $.extend(true, {}, obj) 깊은복사.
+ */
+var obj3 = $.extend(true, {}, obj);
 
 console.log("obj3 === obj : " , obj3 === obj);
 console.log("obj3.a === obj.a : " , obj3.a === obj.a);
