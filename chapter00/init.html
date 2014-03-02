@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>CLASS</title>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+	var Class = function(){
+		var klass = function(/* a, b, c .... arguments */){
+			this.init.apply(this, arguments);
+		}
+		klass.records = [];
+	
+		klass.fn = klass.prototype;
+		klass.fn.parent = klass; // 클래스의 단축
+
+		klass.prototype.init = function(){};
+		klass.prototype.play = function(){ console.log("play"); };
+		klass.prototype.stop = function(){ console.log("stop"); };
+		klass.prototype.save = function(){
+			this.parent.records.push(this); 
+		}
+
+		klass.sort = function(){ console.log("sort"); };
+		return klass; /* function, array, object(default) */
+	}
+
+	var Singer = new Class();
+	Singer.prototype.init = function(){
+		console.log( "init Singer" );
+	}
+	var song1 = new Singer();
+	song1.save().sort();
+	
+	var song2 = new Singer();
+	song2.save();
+	
+	var song3 = new Singer();
+	song3.save();
+	
+	Singer.sort();
+	
+	var Singer2 = new Class();
+</script>
+</body>
+</html>
