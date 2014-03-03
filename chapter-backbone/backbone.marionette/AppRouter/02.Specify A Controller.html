@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>무제 문서</title>
+	
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/json2.js"></script>
+	<script src="../../js/underscore.js"></script>
+	<script src="../../js/backbone.js"></script>
+	<script src="../../js/backbone.marionette.js"></script>
+</head>
+<body>
+
+<ul>
+	<li><a href="#some/route">#some/route</a></li>
+	<li><a href="#some/otherRoute">#some/otherRoute</a></li>
+</ul>
+
+<script type="text/javascript">
+var myObj = {
+	someMethod : function(){
+		console.log("some/someMethod");	
+	}
+}
+MyRouter = Backbone.Marionette.AppRouter.extend({
+	// "someMethod" must exist at controller.someMethod
+	appRoutes : {
+		"some/route": "someMethod"
+	}
+	, controller : myObj
+	
+	/* standard routes can be mixed with appRoutes/Controllers above */
+	, routes : {
+		"some/otherRoute" : "someOtherMethod"
+	}
+	,someOtherMethod : function(){
+		console.log("some/otherRoute");
+	}
+	
+});
+
+myRouter = new MyRouter(/* 방법2 { controller : myObj } */);
+Backbone.history.start();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js "></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.0/backbone.localStorage-min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<div id="container">
+	<ul id="list"></ul>
+</div>
+
+<script type="text/template" id="template1">
+	<a target="<%= target %>" href="<%= href %>"><%= text %></a>
+</script>
+
+<script type="text/javascript">
+	// 기존의 localStorage 지우기
+	localStorage.clear();
+	
+	var Link = Backbone.Model.extend({
+		defaults : { text : "", href : "", target : "_self" }
+	});
+
+	var Links = Backbone.Collection.extend({
+		model : Link,
+		localStorage : new Store('links')
+	});
+
+	var LinksView = Backbone.View.extend({
+		initialize : function(){
+			
+		}
+		, tagName : "li" // el 과 tagName 의 차이 이해 해야함
+		, events : {
+
+		}
+		, template : _.template( $("#template1").html() )
+		, render : function(){
+			this.$el.html( this.template(this.model.toJSON()) );
+			return this;
+		}
+	});
+
+
+	var links = new Links;
+	links.create({ text : "구글", href : "http://www.google.co.kr", target : "_blank" });
+	links.create({ text : "네이버", href : "http://www.naver.com" });
+	links.create({ text : "다음", href : "http://www.naver.com" });
+	
+
+	// 확인하기
+	console.dir( links.toJSON() );
+	console.dir( localStorage );
+
+
+
+	// =========================================================
+	// initialize
+	links.each(function( element, index, list ){
+		var view = new LinksView({ model : element });
+		console.log( view );
+		$("#list").append( view.render().el );
+	});	
+	
+	
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

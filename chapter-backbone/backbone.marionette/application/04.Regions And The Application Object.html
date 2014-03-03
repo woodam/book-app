@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>무제 문서</title>
+	
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/json2.js"></script>
+	<script src="../../js/underscore.js"></script>
+	<script src="../../js/backbone.js"></script>
+	<script src="../../js/backbone.marionette.js"></script>
+</head>
+<body>
+
+<div id="main">...</div>
+
+<script id="template-content" type="text/template">
+	~~content~~
+</script>
+
+
+<script type="text/javascript">
+var contentView = Backbone.Marionette.ItemView.extend({
+	template : "#template-content"
+});
+
+var contentRegion = Backbone.Marionette.Region.extend({
+	initialize : function(options){
+		console.log( "initialize contentRegion" );
+	}
+	// , el : "#main"
+	, explain : function(){
+		console.log( "explain" );	
+	}
+});
+
+// =======================================================================
+
+MyApp = new Backbone.Marionette.Application();
+MyApp.addRegions({
+	main : {
+		selector : "#main", // contentRegion.el 과 같다.
+		regionType : contentRegion
+	}
+});
+MyApp.main.show(new contentView());
+// MyApp.removeRegion('main'); // removeRegion
+</script>
+
+</body>
+</html>
+

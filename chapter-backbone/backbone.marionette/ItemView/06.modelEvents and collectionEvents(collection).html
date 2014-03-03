@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>무제 문서</title>
+	
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/json2.js"></script>
+	<script src="../../js/underscore.js"></script>
+	<script src="../../js/backbone.js"></script>
+	<script src="../../js/backbone.marionette.js"></script>
+</head>
+<body>
+
+<div id="list"></ul>
+
+<script id="some-template" type="text/html">
+	<ul>
+		<% _.each(items, function(item){ %>
+			<li><%= item.name %></li>
+		<% }); %>
+	</ul>
+</script>
+
+<script type="text/javascript">
+	var Person = Backbone.Model.extend({
+		defaults : { name : "null" }
+	});
+
+	var People = Backbone.Collection.extend({
+		model : Person
+	});
+
+	var MyView = Marionette.ItemView.extend({
+		template : "#some-template"
+
+		, modelEvents : {
+			"change" : "modelChanged"
+		}
+		
+		, collectionEvents : {
+			"add" : "modelAdded"
+		}
+	
+		, modelChanged : function(model){
+			console.log( "model:changed" );
+		}
+		
+		, modelAdded : function(model, collection, options){
+			console.log( "model:added");
+		}
+	});
+
+	// =================================================================
+
+	/* create collection */
+	var people = new People([{ name : "jiman1" }, { name : "jiman2" }, { name : "jiman3" }]);
+
+	var view = new MyView({ collection : people });
+	$("#list").append( view.render().el );
+
+	// =================================================================
+
+	people.add([
+		{ name : "name1" },
+		{ name : "name2" }
+	]);
+	view.render();
+</script>
+
+</body>
+</html>
+
+
+
