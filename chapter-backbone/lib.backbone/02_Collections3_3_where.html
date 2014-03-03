@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js "></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<div id="container">
+	<button>Load</button>
+	<ul id="list"></ul>
+</div>
+
+<div id="list-template">
+	<li><a href=""></a></li>
+</div>
+
+<script type="text/javascript">
+	var Person = Backbone.Model.extend({
+		defaults : { name : "" , age : "" }
+	});
+	
+	var People = Backbone.Collection.extend({
+		model : Person
+	});
+	
+	var people = new People([
+		{ name : "sy", age : 10, id : "id-1" },
+		{ name : "sy", age : 10, id : "id-4" },
+		{ name : "sy", age : 20, id : "id-5" },
+		{ name : "name2", id : "id-2" },
+		{ name : "name3", id : "id-3" }
+	]);
+	
+	// 조건에 맞는 model 들을 array 로 받기
+	var array = people.where({ name : "sy" });
+	console.log( JSON.stringify(array) );
+	
+	var array = people.where({ name : "sy", age : 10 });
+	console.log( JSON.stringify(array) );
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

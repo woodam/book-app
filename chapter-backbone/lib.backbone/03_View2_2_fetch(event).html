@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js "></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.0/backbone.localStorage-min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<div id="container">
+	<p>
+		사이트 : <button id="load">Load</button>
+	</p>
+	<ul id="list"></ul>
+</div>
+
+<script type="text/template" id="template1">
+<li><a target="<%= target %>" href="<%= href %>"><%= text %></a></li>
+</script>
+
+<script type="text/javascript">
+	// model
+	var Link = Backbone.Model.extend({
+		defaults : { text : "", href : "", target : "_self" }
+	});
+
+	// collection
+	var Links = Backbone.Collection.extend({
+		model : Link,
+		localStorage : new Store('links')
+	});
+
+	// view
+	var linksView  = Backbone.View.extend({
+		initialize : function(){
+			
+		}
+		, events : {
+
+		}
+		, tagName : "li"
+		, template : _.template( $("#template1").html() )
+		, render : function(){
+			this.$el.html( this.template(this.model.toJSON()) );
+			return this;
+		}
+	});
+
+	// AppView가 전체를 컨트롤
+	var AppView = Backbone.View.extend({
+		initialize : function(){
+			this.listenTo(links, "reset", this.addAll);
+		}
+		, events : {
+			"click #load " : "load"
+		}
+		, el : "#container"
+		, render : function(){
+			
+		}
+		, addAll : function( collection, options ){
+			collection.each(this.addOne, this);
+		}
+		, addOne : function(element, index, list){
+			var view = new linksView({ model : element });
+			$("#list").append( view.render().el );	
+		}
+		, load : function(){
+			 links.fetch(); // trigger - reset
+		}
+	});
+
+
+
+	// 기존의 localStorage 지우기
+	localStorage.clear();
+	
+	var links = new Links;
+	links.create({ text : "구글", href : "http://www.google.co.kr", target : "_blank" });
+	links.create({ text : "네이버", href : "http://www.naver.com" });
+	links.create({ text : "다음", href : "http://www.naver.com" });
+	links = new Links
+
+	// 확인하기
+	console.dir( links.toJSON() );
+	console.dir( localStorage );
+
+	new AppView();
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

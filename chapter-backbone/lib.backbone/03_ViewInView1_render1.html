@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js "></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.0/backbone.localStorage-min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<div id="page-wrap"></div>
+
+<script type="text/template" id="template-layout">
+	<div id="page-header">header</div>
+	<div id="page-container">container</div>
+	<div id="page-footer">footer</div>
+</script>
+<script type="text/template" id="template-header">
+	<h1>logo</h1>
+	<ul>
+		<li><a href="#menu1">menu1</a></li>
+		<li><a href="#menu2">menu2</a></li>
+		<li><a href="#menu3">menu3</a></li>
+		<li><a href="#menu4">menu4</a></li>
+	</ul>
+</script>
+<script type="text/template" id="template-footer">page-footer</script>
+
+<script type="text/javascript">
+var HeaderView = Backbone.View.extend({
+	tagName : "section"
+	, id : "header"
+	, className : "header"
+	
+	, template : _.template( $("#template-header").html() )
+	, events : {
+		"click" : "onClickHandler"
+	}
+	
+	, render : function(){
+		this.$el.html(this.template());
+		return this;
+	}
+	
+	, onClickHandler : function(event){
+		console.log("onClickHandler - event.currentTarget : ", event.currentTarget);
+		console.log("onClickHandler - event.target : ", event.target);
+		
+		this.test();
+		
+		return false;
+	}
+	
+	, test : function(){
+		console.log("test");
+	}	
+});
+
+var FooterView = Backbone.View.extend({
+	tagName : "section"
+	, id : "footer"
+	, className : "footer"
+	
+	, template : _.template( $("#template-footer").html() )
+	, render : function(){
+		this.$el.html(this.template());
+		return this;
+	}
+});
+
+var Layout = Backbone.View.extend({
+	initialize : function(){
+		this.on("render", this.onRender);
+		
+		this.render();
+	}
+	
+	, el : "#page-wrap"
+	, template : _.template($("#template-layout").html())
+
+	, render : function(){
+		this.$el.html(this.template());
+		this.trigger("render");
+		return this;
+	}
+	
+	, onRender : function (){
+	    this.headerView = new HeaderView();
+	    this.footerView = new FooterView();
+
+		// layout 의 템플릿 요소안에 headerView, footerView 의 내용을 위치시키기 어렵고
+		// #page-container 와 관련해서 생각해도 정확한 section 위치를 보장받기 힘들고 용통성이 없다.
+		
+		this.$el.append(this.headerView.render().el);
+		this.$el.append(this.footerView.render().el);
+	}
+});
+
+var layout = new Layout();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>무제 문서</title>
+	
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/json2.js"></script>
+	<script src="../../js/underscore.js"></script>
+	<script src="../../js/backbone.js"></script>
+	<script src="../../js/backbone.marionette.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+var Person = Backbone.Model.extend({
+	defaults : { name : "null" }
+});
+
+var p1 = new Person({ name : "jiman" });
+
+// ===================================================
+	
+var MyController = Marionette.Controller.extend({
+	onClose: function(){
+		console.log( "onClose" );
+	}
+})
+
+var contr = new MyController();
+
+contr.on("close", function(){
+	console.log( "on - close" );
+});
+contr.listenTo(p1, "bar", function(){
+	console.log( "listenTo - bar" );
+});
+
+contr.trigger("close");
+p1.trigger("bar");
+
+// close the controller: unbind all of the event handlers,
+// trigger the "close" event and  call the onClose method
+console.info( "------------ contr.close(); -------------" );
+contr.close();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

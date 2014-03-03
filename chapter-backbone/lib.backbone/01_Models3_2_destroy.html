@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.0/backbone.localStorage-min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+/*
+	테스트를 위하여 서버 대신에 localStorage 에 저장한다.
+
+	"test" = 키값1, 키값2
+	"test-키값1" = "{""name"":""jiman"",""age"":"""",""id"":""키값1""}"
+	"test-키값2" = "{""name"":""sy2"",""age"":"""",""id"":""키값2""}"
+		
+*/
+	localStorage.clear();
+
+	var Person = Backbone.Model.extend({
+		initialize : function(){
+			
+		}
+		, defaults : { name : "", age : "" }
+		, localStorage : new Store('test')
+	});
+	
+
+	var p1 = new Person({ name : "jiman" });
+	var p2 = new Person({ name : "sy" });
+
+	p1.save(); // p1를 서버에 저장 ( 이파일에서는 로컬호스트에 저장 )
+	p2.save(); // p2를 서버에 저장 ( 이파일에서는 로컬호스트에 저장 )
+	
+	console.dir( localStorage );
+	
+	
+	p1.destroy();
+	console.info("p1.destroy");
+	console.dir( localStorage );
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

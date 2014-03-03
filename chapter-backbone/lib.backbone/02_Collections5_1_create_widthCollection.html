@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.0/backbone.localStorage-min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+/*
+	
+*/
+
+	// 기존의 localStorage 지우기
+	localStorage.clear();
+
+
+	var Person = Backbone.Model.extend({
+		initialize : function(){
+			
+		}
+		, defaults : { name : "", age : "" }
+	});
+	
+	var People = Backbone.Collection.extend({
+		initialize : function(){
+
+		}
+		, model : Person
+		, localStorage : new Store('test')
+	});
+	
+
+	var people = new People;
+
+	
+	/* create 를 사용하면 save 된것처럼 서버에 저장되어 id가 붙는다.
+	 */
+	people.create({ name : "name1", age : 30 });
+	people.create({ name : "name2", age : 31 });
+
+
+	/* people.add 처럼 사용하게 되면 서버에 저장되지 않아서
+	 * 아래의 코드처럼 add 될때 다시 save를 해주어야한다.
+		people.on("add", function( model ){
+			console.log( "add : ", model );
+			model.save()
+		});
+	 */
+
+	// add, remove, reset 은 서버에 model 를 저장하지 않는다.
+	people.add([
+		{ name : "jm", age : 33 },
+		{ name : "sy", age : 31 }
+	]);
+
+	
+	// 확인하기
+	console.dir( people.toJSON() );
+	console.dir( localStorage );
+	
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
