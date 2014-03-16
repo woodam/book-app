@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>무제 문서</title>
+	
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/json2.js"></script>
+	<script src="../../js/underscore.js"></script>
+	<script src="../../js/backbone.js"></script>
+	<script src="../../js/backbone.marionette.js"></script>
+</head>
+<body>
+
+<div id="header">#header</div>
+<div id="main-content">#main-content</div>
+
+<script id="template-myView" type="text/template">
+	~~~~~~
+</script>
+
+
+<script type="text/javascript">
+var HeaderView = Backbone.Marionette.ItemView.extend({
+	template : "#template-myView"
+});
+
+var MainView = Backbone.Marionette.ItemView.extend({
+	template : "#template-myView"
+});
+var headerView = new HeaderView;
+var mainView = new MainView;
+
+// =====================================================================
+
+var rm = new Marionette.RegionManager() // Region 추가/삭제
+  , myObject = {};
+	
+rm.on("region:add", function(name, region){
+  myObject[name] = region;
+
+});
+
+rm.on("region:remove", function(name, region){
+  delete myObject[name];
+});
+
+var region  = rm.addRegion("header", "#header");
+var regions = rm.addRegions({
+	main : "#main-content",
+	footer : "#footer"
+});
+
+region.show(headerView);
+regions.main.show(mainView);
+
+console.dir( myObject );
+
+/*
+rm.removeRegion("header");
+console.dir( myObject );
+// */
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

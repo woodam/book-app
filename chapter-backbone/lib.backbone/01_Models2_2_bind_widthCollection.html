@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js "></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+/*
+	- 모델을 참조하고 있는 컬렉션에 이벤트와 그 모델에 걸린 이벤트는 중복되는가? - 테스트 결과 중복된다.
+	  둘중하나만 걸면 될거 같다.
+	  
+	collection에 model : Person 이라고 넣어 주었기 때문에
+	model에 이벤트가 발생시 collection 에도 전파되는듯 함
+*/
+
+	var Person = Backbone.Model.extend({
+		initialize : function(){
+			this.bind("all", function(){ console.info( "model       : ", arguments ); }); // 1번
+		}
+		, defaults : { name : "", age : "" }
+	});
+	
+
+	var People = Backbone.Collection.extend({
+		initialize : function(){
+			this.bind("all", function(){ console.info("collections : ", arguments ); }); // 2번
+		}
+		, model : Person
+	});
+	
+	var people = new People();
+	people.add([
+		{ name : "jiman" },
+		{ name : "name1" },
+		{ name : "name2", id : 0 }
+	]);
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

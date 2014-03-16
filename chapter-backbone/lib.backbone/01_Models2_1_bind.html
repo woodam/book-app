@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>무제 문서</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/qunit-1.10.0.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.0-rc.3/lodash.underscore.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.9/backbone-min.js "></script>
+<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.10.0.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+
+<script type="text/javascript">
+/*
+	- 모델에 이벤트를 살펴보자
+	- 이벤트중 all 은 조금 다르다 (arguments)
+*/
+	var Person = Backbone.Model.extend({
+		initialize : function(){
+			console.log( "initialize" );
+			
+			/* all의 arguments 는 이벤트의 종류에 맞게 넘어온다.
+			 * http://backbonejs.org/#Events-catalog
+			*/
+			this.bind("change:name", function(model, value, options){
+				console.info('"change:name" - model, value, options : ', arguments );
+			});
+			this.bind("change", function(model, value, options){
+				console.info('"change" - model, value, options : ', arguments );
+			});
+			this.bind("all", function(){
+				console.info('"all" - : ', arguments );
+			});
+		}
+		, defaults : { name : "", age : "" }
+	});
+	
+	// 초기 선언시 들고들어가는 { name : "jiman" } 에는 이벤트가 발생하지 않음
+	var person = new Person({ name : "jiman" });
+	
+	// trigger 발생
+	person.set({ name : "sy" });
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

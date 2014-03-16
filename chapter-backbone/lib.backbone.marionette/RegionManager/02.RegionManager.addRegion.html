@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>무제 문서</title>
+	
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/json2.js"></script>
+	<script src="../../js/underscore.js"></script>
+	<script src="../../js/backbone.js"></script>
+	<script src="../../js/backbone.marionette.js"></script>
+</head>
+<body>
+
+<div id="main-content">#main-content</div>
+
+<script id="template-myView" type="text/template">
+	myView~~~~~~
+</script>
+
+
+<script type="text/javascript">
+var MyView = Backbone.Marionette.ItemView.extend({
+	template : "#template-myView"
+});
+var myView = new MyView;
+
+// =====================================================================
+
+var rm = new Marionette.RegionManager();
+
+var region = rm.addRegion("foo", "#main-content");
+    region.show(myView);
+
+console.info( "rm" );
+console.dir( rm );
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
