@@ -3,27 +3,38 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>template</title>
-	<script src="../lib/underscore.js" type="text/javascript"></script>
+	<script src="../lib/jquery/jquery.js" type="text/javascript"></script>
+	<script src="../lib/underscore/underscore.js" type="text/javascript"></script>
 </head>
 <body>
-	
+
 <ul id="result"></ul>
-	
+
+<script type="text/template" id="template-html">
+	<li>
+		<p>name - <%= name %></p>
+		<p>date - <%= date %></p>
+	</li>
+</script>
+
 <script type="text/javascript" charset="utf-8">
-	var templateFnc = _.template("<li>name : <%= name %></li>");
-	
+	// var templateFnc = _.template("<li>name : <%= name %></li>");
+	var templateFnc = _.template($("#template-html").html());
+
 	var data = [
-		{ name : "name1" },
-		{ name : "name2" },
-		{ name : "name3" }
+		{ name : "name1", date : '2013-01-11' },
+		{ name : "name2", date : '2013-01-12'  },
+		{ name : "name3", date : '2013-01-13'  }
 	];
-	
+
 	var html = "";
 	for(var i=0; i<data.length; i++){
-		html += templateFnc(data);
+		html += templateFnc(data[i]);
 	}
-	console.log( html );
-	
+
+	$("#result").append(html);
 </script>
 </body>
 </html>
+
+
