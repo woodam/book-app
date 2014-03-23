@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>model</title>
+<script src="../lib/jquery/jquery.js"></script>
+</head>
+<body>
+<script type="text/javascript" charset="utf-8">
+(function($){
+window.Class = function(parent){
+	var klass = function(){
+		this.init.apply(this, arguments);
+	}
+	
+	if(parent){
+		var subclass = function(){};
+		subclass.prototype = parent.prototype;
+		klass.prototype = new subclass;
+	}
+	
+	klass.fn = klass.prototype;
+	klass.fn.parent = klass;
+	
+	// include
+	klass.fn.init = function(){}
+	klass.fn.proxy = function(func){ return $.proxy(func, this);}
+	klass.fn.load = function(func){ $(this.proxy(func)); }
+
+	// extend
+	klass.extend = function(o){  $.extend(this, o); },
+    klass.include = function(o){ $.extend(this.prototype, o); }
+	
+	if(parent) klass.extend(parent);
+	
+	return klass; /* function, array, object */
+}
+}(jQuery));
+
+(function($){
+window.Events = {
+	eventSetup : function(){ this.o = jQuery({}) },
+	_bind: function(){    this.o.bind.apply(this.o, arguments); },
+	_trigger: function(){ this.o.trigger.apply(this.o, arguments); }
+};
+}(jQuery));
+
+
+var Scene = new Class();
+Scene.extend(window.Events);
+Scene.eventSetup();
+
+Scene.extend({
+	change : function(num){
+		this._trigger("change", num);
+	}
+});
+
+Scene.include({
+	trigger : function(name){
+		this.parent._trigger(name)
+	}
+});
+
+var main = new Main;
+
+
+</script>
+</body>
+</html>
