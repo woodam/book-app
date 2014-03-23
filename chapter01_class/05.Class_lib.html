@@ -3,48 +3,60 @@
 <head>
 <meta charset="utf-8">
 <title>model</title>
-<script src="../lib/jquery.js"></script>
+<script src="../lib/jquery/jquery.js"></script>
 </head>
 <body>
 <script type="text/javascript" charset="utf-8">
-if(typeof Object.create !== "function"){
-	Object.create = function(o){
-		function F(){}
-		F.prototype = o;
-		return new F();
+var Class = function(parent){
+	var klass = function(){
+		this.init.apply(this, arguments);
 	}
+	
+	if( parent ){
+		var subclass = function(){};
+		subclass.prototype = parent.prototype;
+		klass.prototype = new subclass;
+	}
+	
+	klass.fn = klass.prototype;
+	klass.fn.parent = klass;
+	
+	// include
+	klass.fn.init = function(){}
+	klass.fn.proxy = function(func){ return $.proxy(func, this);}
+	
+	klass.extend = function(o){  $.extend(this, o); },
+    klass.include = function(o){ $.extend(this.prototype, o); }
+	
+	if(parent) klass.extend(parent);
+	
+	return klass; /* function, array, object */
 }
 
-var Model = {
-	inherited : function(){},
-	created : function(){},
-	
-	prototype : {
-		init : function(){}
-	},
-	
-	create : function(){
-		var object = Object.create(this);
-		object.parent = this;
-		object.prototype = object.fn = Object.create(this.prototype);
-		
-		object.created();
-		this.inherited(object);
-		return object;
-	},
-	
-	init : function(){
-		var instance = Object.create(this.prototype);
-		instance.parent = this;
-		instance.init.apply(instance, arguments);
-		return instance;
+var Parent = new Class();
+Parent.extend({
+	say : function(msg){
+		console.log("say - ", msg);
 	}
-}
+});
+Parent.include({
+	test1 : function(){
+		console.log("Parent.test1");
+	}
+});
 
-var Asset = Model.create();
-var User = Model.create();
+var Child = new Class(Parent);
+Child.include({
+	// test1 : function(){ console.log("Child.test1"); },
+	test2 : function(){ console.log("Child.test2"); }
+});
 
-var user = User.init();
+Parent.say("parent");
+Child.say("child");
+
+var p1 = new Child();
+p1.test1();
+p1.test2();
 </script>
 </body>
 </html>
