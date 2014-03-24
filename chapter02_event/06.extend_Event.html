@@ -12,7 +12,7 @@ window.Class = function(parent){
 	var klass = function(){
 		this.init.apply(this, arguments);
 	}
-	
+
 	if(parent){
 		var subclass = function(){};
 		subclass.prototype = parent.prototype;
@@ -51,20 +51,26 @@ Scene.extend(window.Events);
 Scene.eventSetup();
 
 Scene.extend({
-	change : function(num){
-		this._trigger("change", num);
+	bind : function(num){
+		this._bind("change", num);
 	}
 });
 
 Scene.include({
 	trigger : function(name){
-		this.parent._trigger(name)
+		this.parent._trigger(name);
 	}
 });
 
-var main = new Main;
+var visual = new Scene;
+var news = new Scene;
 
-
+var utility = new Scene;
+utility.include({
+	trigger : function(name){
+		this.parent._trigger(name);
+	}
+});
 </script>
 </body>
 </html>
