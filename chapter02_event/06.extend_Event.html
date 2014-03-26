@@ -8,6 +8,12 @@
 <body>
 <script type="text/javascript" charset="utf-8">
 (function($){
+var Events = {
+	eventSetup : function(){ this.o = jQuery({}) },
+	bind: function(){    this.o.bind.apply(this.o, arguments); },
+	trigger: function(){ this.o.trigger.apply(this.o, arguments); }
+};
+	
 window.Class = function(parent){
 	var klass = function(){
 		this.init.apply(this, arguments);
@@ -23,6 +29,9 @@ window.Class = function(parent){
 	klass.fn.parent = klass;
 	
 	// include
+	$.extend(klass.fn, Events);
+	klass.fn.eventSetup();
+	
 	klass.fn.init = function(){}
 	klass.fn.proxy = function(func){ return $.proxy(func, this);}
 	klass.fn.load = function(func){ $(this.proxy(func)); }
@@ -37,40 +46,30 @@ window.Class = function(parent){
 }
 }(jQuery));
 
-(function($){
-window.Events = {
-	eventSetup : function(){ this.o = jQuery({}) },
-	_bind: function(){    this.o.bind.apply(this.o, arguments); },
-	_trigger: function(){ this.o.trigger.apply(this.o, arguments); }
-};
-}(jQuery));
-
 
 var Scene = new Class();
-Scene.extend(window.Events);
-Scene.eventSetup();
-
 Scene.extend({
-	bind : function(num){
-		this._bind("change", num);
-	}
+	
 });
 
 Scene.include({
-	trigger : function(name){
-		this.parent._trigger(name);
+	init : function(){
+		console.log( 'init : ', arguments );
 	}
 });
 
-var visual = new Scene;
-var news = new Scene;
 
-var utility = new Scene;
-utility.include({
-	trigger : function(name){
-		this.parent._trigger(name);
-	}
-}); 
+var news = new Scene(21);
+news.bind("test1", function(){
+	alert('test1');
+});
+news.trigger('test1');
+
+var visual = new Scene(31);
+visual.bind("test2", function(){
+	alert('test2');
+});
+visual.trigger('test2');
 </script>
 </body>
 </html>
