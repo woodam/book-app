@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>model</title>
-<script src="../lib/jquery.js"></script>
-<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> -->
+<script src="../lib/jquery/jquery.js"></script>
 </head>
 <body>
 	
@@ -19,6 +18,7 @@
  * 추상화(abstraction)
  * 주어진 문제나 시스템을 중요하고 관계 있는 부분만 분리해 내어 간결하고 이해하기 쉽게 만드는 작업. 
  */
+
 (function($, exports){
 	var mod = function(includes){
 		if(includes) this.include(includes);
@@ -29,20 +29,18 @@
 	mod.fn.proxy = function(func){
 		return $.proxy(func, this);
 	}
-	
 	mod.fn.load = function(func){
 		$(this.proxy(func));
 	}
 	
-	mod.fn.include = function(ob){
-		$.extend(this, ob);
-	}
+	mod.extend = function(o){  $.extend(this, o); },
+    mod.include = function(o){ $.extend(this.prototype, o); }
 	
 	exports.Controller = mod;
 })(jQuery, window);
 
 Controller.fn.unload = function(func){
-	$(window).bind("unload", this.proxy(func));
+	$(window).on("unload", this.proxy(func));
 }
 
 (function($, Controller){
