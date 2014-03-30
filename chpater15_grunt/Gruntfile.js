@@ -29,6 +29,17 @@ module.exports = function(grunt) {
 			}
 		},
 		
+		/* less파일 -> css파일로변환
+		 * https://github.com/gruntjs/grunt-contrib-less
+		 */
+		less: {
+			dist: {
+				files: {
+					'dist/ui2.css' : ['source/less/*.less'] 
+				}
+			}
+		},
+		
 		// .css파일 .min.css 파일로 압축하기
 		cssmin: {
 			dist: {
@@ -50,6 +61,10 @@ module.exports = function(grunt) {
 			js:{
 				files: ['source/js/*.js'],
 				tasks: ['concat:js', 'uglify']
+			},
+			less:{
+				files: ['source/less/*.less'],
+				tasks: ['less', 'cssmin']
 			}
 		}
 	});
@@ -63,6 +78,6 @@ module.exports = function(grunt) {
 	}
 
   // Default task(s).
-  grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'watch']);
+  grunt.registerTask('default', ['concat', 'uglify', 'less', 'cssmin', 'watch']);
 
 };
