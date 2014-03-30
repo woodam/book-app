@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -13,7 +13,7 @@
 	
 <div id="view">view</div>
 	
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
 /*
  * 추상화(abstraction)
  * 주어진 문제나 시스템을 중요하고 관계 있는 부분만 분리해 내어 간결하고 이해하기 쉽게 만드는 작업. 
@@ -32,30 +32,33 @@
 	mod.fn.load = function(func){
 		$(this.proxy(func));
 	}
-	
-	mod.extend = function(o){  $.extend(this, o); },
+
+	mod.extend = function(o){  $.extend(this, o); }
     mod.include = function(o){ $.extend(this.prototype, o); }
-	
+
 	exports.Controller = mod;
 })(jQuery, window);
 
-Controller.fn.unload = function(func){
-	$(window).on("unload", this.proxy(func));
-}
+
+(function($, exports){
+	Controller.fn.unload = function(func){
+		alert("unload");
+		$(window).on("unload", this.proxy(func));
+	}
+})(jQuery, window);
+
 
 (function($, Controller){
 	var mod = new Controller;
 	
 	mod.toggleClass = function(e){
-		console.log( e.data );
-		
-		this.view.toggleClass("over", e.data);
+		this.$view.toggleClass("over", e.data.over);
 	}
 	
 	mod.load(function(){
-		this.view = $("#view");
-		this.view.mouseover(this.proxy(this.toggleClass), true);
-		this.view.mouseout(this.proxy(this.toggleClass), false);
+		this.$view = $("#view");
+		this.$view.on("mouseover", {over:true }, this.proxy(this.toggleClass));
+		this.$view.on("mouseout", {over:false }, this.proxy(this.toggleClass));
 	});
 })(jQuery, Controller);
 </script>

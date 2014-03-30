@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -6,8 +6,18 @@
 <script src="../lib/jquery/jquery.js"></script>
 </head>
 <body>
-<script type="text/javascript" charset="utf-8">
-var exports = this;
+	
+<style>
+.over {background:orange;}
+</style>
+	
+<div id="view">view</div>
+	
+<script type="text/javascript">
+/*
+ * 모듈은 상단에서 로드하고
+ * 객체의 동작은 $(function(){ ... 내용 ... }) 으로 안전하게 실행 
+ */
 
 (function($, exports){
 	var mod = function(includes){
@@ -22,28 +32,34 @@ var exports = this;
 	mod.fn.load = function(func){
 		$(this.proxy(func));
 	}
-	
-	mod.extend = function(o){  $.extend(this, o); },
+
+	mod.extend = function(o){  $.extend(this, o); }
     mod.include = function(o){ $.extend(this.prototype, o); }
-	
+
 	exports.Controller = mod;
 })(jQuery, window);
 
+
+(function($, exports){
+	Controller.fn.unload = function(func){
+		alert("unload");
+		$(window).on("unload", this.proxy(func));
+	}
+})(jQuery, window);
+
+
+$(function(){
+	var mod = new Controller;
 	
-$(function($){ // <==== 문서를 로딩한 다음에 컨트롤러 로딩하기
-	var ToggleView = Controller.create({
-		init : function(){
-			this.view = $("#view");
-			this.view.mouseover(this.proxy(this.toggleClass), true);
-			this.view.mouseout(this.proxy(this.toggleClass), false);
-		},
-		
-		toggleClass : function(e){
-			this.view.toggleClass("over", e.data);
-		}
+	mod.toggleClass = function(e){
+		this.$view.toggleClass("over", e.data.over);
+	}
+	
+	mod.load(function(){
+		this.$view = $("#view");
+		this.$view.on("mouseover", {over:true }, this.proxy(this.toggleClass));
+		this.$view.on("mouseout", {over:false }, this.proxy(this.toggleClass));
 	});
-	
-	new ToggleView("#view");
 });
 </script>
 </body>

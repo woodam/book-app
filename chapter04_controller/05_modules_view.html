@@ -1,4 +1,4 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -6,45 +6,112 @@
 <script src="../lib/jquery/jquery.js"></script>
 </head>
 <body>
-<script type="text/javascript" charset="utf-8">
-var exports = this;
-
+	
+<div id="users">
+	<form>
+		<input type="search" value="" placeholder="Enter a query">
+		<button>Search</button>
+	</form>
+</div>
+	
+<script type="text/javascript">
 (function($, exports){
-	var mod = function(includes){
-		if(includes) this.include(includes);
+var Class = function(parent){
+	var klass = function(){
+		this.init.apply(this, arguments);
 	}
 	
-	mod.fn = mod.prototype;
-	
-	mod.fn.proxy = function(func){
-		return $.proxy(func, this);
-	}
-	mod.fn.load = function(func){
-		$(this.proxy(func));
+	if( parent ){
+		var subclass = function(){};
+		subclass.prototype = parent.prototype;
+		klass.prototype = new subclass;
 	}
 	
-	mod.extend = function(o){  $.extend(this, o); },
-    mod.include = function(o){ $.extend(this.prototype, o); }
+	klass.fn = klass.prototype;
+	klass.fn.parent = klass;
 	
-	exports.Controller = mod;
+	// include
+	klass.fn.init = function(){}
+	klass.fn.proxy = function(func){ return $.proxy(func, this);}
+	
+	klass.extend = function(o){  $.extend(this, o); }
+    klass.include = function(o){ $.extend(this.prototype, o); }
+	
+	if(parent) klass.extend(parent);
+	
+	return klass; /* (function), array, object */
+}
+
+exports.Class = Class;
 })(jQuery, window);
 
+
+(function($, exports){
+var Controller = new Class();
+Controller.extend({
+	inherited : function(){},
+	created : function(){},
 	
-$(function($){ // <==== 문서를 로딩한 다음에 컨트롤러 로딩하기
-	var ToggleView = Controller.create({
-		init : function(){
-			this.view = $("#view");
-			this.view.mouseover(this.proxy(this.toggleClass), true);
-			this.view.mouseout(this.proxy(this.toggleClass), false);
-		},
+	prototype : {
+		init : function(){}
+	},
+	
+	create : function(){
+		var object = Object.create(this);
+		object.parent = this;
+		object.prototype = object.fn = Object.create(this.prototype);
 		
-		toggleClass : function(e){
-			this.view.toggleClass("over", e.data);
-		}
-	});
+		object.created();
+		this.inherited(object);
+		return object;
+	},
 	
-	new ToggleView("#view");
-})(jQuery);
+	init : function(){
+		var instance = Object.create(this.prototype);
+		instance.parent = this;
+		instance.init.apply(instance, arguments);
+		return instance;
+	}
+});
+
+Controller.include({
+    $: function(selector){
+      return $(selector, this.el);
+    },
+    
+    refreshElements: function(){
+      for (var key in this.elements) {
+        this[this.elements[key]] = this.$(key);
+      }
+    }
+});
+
+exports.Controller = Controller;
+})(jQuery, window);
+
+
+$(function($){
+  exports.SearchView = Controller.create({
+    elements: {
+      "input[type=search]": "searchInput",
+      "form": "searchForm"
+    },
+    
+    init: function(element){
+      this.el = $(element);
+      this.refreshElements();
+      this.searchForm.submit(this.proxy(this.search));
+    },
+    
+    search: function(){
+      alert("Searching: " + this.searchInput.val());
+      return false;
+    },
+
+  });
+  
+  new SearchView("#users");
+});
 </script>
 </body>
 </html>

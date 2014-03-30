@@ -25,12 +25,12 @@ var Class = function(parent){
 	klass.fn.init = function(){}
 	klass.fn.proxy = function(func){ return $.proxy(func, this);}
 	
-	klass.extend = function(o){  $.extend(this, o); },
+	klass.extend = function(o){  $.extend(this, o); }
     klass.include = function(o){ $.extend(this.prototype, o); }
 	
 	if(parent) klass.extend(parent);
 	
-	return klass; /* function, array, object */
+	return klass; /* (function), array, object */
 }
 
 var Parent = new Class();
