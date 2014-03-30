@@ -17,6 +17,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		
 		/* 자바스크립트 파일 압축하기
 		 * https://github.com/gruntjs/grunt-contrib-uglify 
 		 */ 
@@ -39,6 +40,17 @@ module.exports = function(grunt) {
 				dest: 'dist/',
 				ext: '.min.css'
 			}
+		},
+		
+		watch: {
+			css:{
+				files: ['source/css/*.css'],
+				tasks: ['concat:css', 'cssmin']
+			},
+			js:{
+				files: ['source/js/*.js'],
+				tasks: ['concat:js', 'uglify']
+			}
 		}
 	});
 
@@ -51,6 +63,6 @@ module.exports = function(grunt) {
 	}
 
   // Default task(s).
-  grunt.registerTask('default', ['concat', 'uglify', 'cssmin']);
+  grunt.registerTask('default', ['concat', 'uglify', 'cssmin', 'watch']);
 
 };
