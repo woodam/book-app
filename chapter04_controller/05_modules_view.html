@@ -16,12 +16,23 @@
 	
 <script type="text/javascript">
 (function($, exports){
+var Events = {
+	bind: function(){
+		if( !this.o ) this.o = $({});
+		this.o.bind.apply(this.o, arguments);
+	},
+	trigger: function(){
+		if( !this.o ) this.o = $({});
+		this.o.trigger.apply(this.o, arguments);
+	}
+};
+	
 var Class = function(parent){
 	var klass = function(){
 		this.init.apply(this, arguments);
 	}
-	
-	if( parent ){
+
+	if(parent){
 		var subclass = function(){};
 		subclass.prototype = parent.prototype;
 		klass.prototype = new subclass;
@@ -31,9 +42,13 @@ var Class = function(parent){
 	klass.fn.parent = klass;
 	
 	// include
+	$.extend(klass.fn, Events);
+	
 	klass.fn.init = function(){}
 	klass.fn.proxy = function(func){ return $.proxy(func, this);}
-	
+	klass.fn.load = function(func){ $(this.proxy(func)); }
+
+	// extend
 	klass.extend = function(o){  $.extend(this, o); }
     klass.include = function(o){ $.extend(this.prototype, o); }
 	

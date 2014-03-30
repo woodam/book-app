@@ -19,7 +19,7 @@ var Events = {
 	}
 };
 	
-window.Class = function(parent){
+var Class = function(parent){
 	var klass = function(){
 		this.init.apply(this, arguments);
 	}
@@ -46,8 +46,10 @@ window.Class = function(parent){
 	
 	if(parent) klass.extend(parent);
 	
-	return klass; /* function, array, object */
+	return klass; /* (function), array, object */
 }
+
+window.Class = Class;
 }(jQuery));
 
 
